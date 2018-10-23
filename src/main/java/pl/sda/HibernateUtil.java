@@ -22,7 +22,7 @@ public class HibernateUtil {
         try {
             session = sessionFactory.openSession();
         } catch (Exception e) {
-            throw new Exception("Blad polaczenia z baza danych!");
+            throw e;
         }
         return session;
     }
