@@ -1,13 +1,15 @@
 package pl.sda;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class User {
@@ -35,7 +37,16 @@ public class User {
     @OneToOne
     UserRating userRating;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    Set<UserComment> userCommentSet;
 
 
+    public void addUserComment(UserComment userComment) {
+        if (userCommentSet == null) {
+            userCommentSet = new HashSet<>();
+        }
 
+        userComment.setUser(this);
+        userCommentSet.add(userComment);
+    }
 }
