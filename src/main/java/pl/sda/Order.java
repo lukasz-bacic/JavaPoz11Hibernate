@@ -3,6 +3,7 @@ package pl.sda;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

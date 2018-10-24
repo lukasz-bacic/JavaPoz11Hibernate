@@ -45,7 +45,6 @@ public class OrderRepository {
 
     }
 
-
     public static void saveOrUpdate(Order order) {
         Session session = null;
         try {
@@ -84,7 +83,26 @@ public class OrderRepository {
                 session.close();
             }
         }
+    }
 
+    public static List<Order> findAllByCityName(String city) {
+        Session session = null;
+        try {
+            session = HibernateUtil.openSession();
+            String hql = "SELECT o FROM Order o WHERE o.address.city = :city";
+            Query query = session.createQuery(hql);
+            query.setParameter("city", city);
+            List<Order> allOrder = query.getResultList();
 
+            return allOrder;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 }

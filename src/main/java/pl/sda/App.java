@@ -32,6 +32,11 @@ public class App {
         List<Order> all = OrderRepository.findAll();
         all.stream().forEach(o -> System.out.println(o.getAddress().getCity()));
 
+        List<Order> poznanOrders = OrderRepository.findAllByCityName("Poznan");
+        List<Order> warszawaOrders = OrderRepository.findAllByCityName("Warszawa");
+
+        System.out.println("poznanOrders "+poznanOrders.size());
+        System.out.println("warszawaOrders "+warszawaOrders.size());
 
     }
 }
