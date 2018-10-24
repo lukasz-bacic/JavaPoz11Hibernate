@@ -32,5 +32,10 @@ public class User {
     @Embedded
     Address address;
 
+    @OneToOne
+    UserRating userRating;
+
+
+
 
 }

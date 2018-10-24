@@ -16,6 +16,7 @@
 
         <mapping class="pl.sda.User" />
         <mapping class="pl.sda.Order" />
+        <mapping class="pl.sda.UserRating" />
 
     </session-factory>
 </hibernate-configuration>
