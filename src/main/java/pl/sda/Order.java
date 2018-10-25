@@ -11,11 +11,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @Table(name = "orders")
-public class Order implements Serializable{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Order extends BaseEntity {
 
     String test;
 
@@ -24,9 +20,6 @@ public class Order implements Serializable{
 
     public Order() {
     }
-
-
-
 
 
 }

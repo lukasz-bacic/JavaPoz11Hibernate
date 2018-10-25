@@ -70,7 +70,7 @@ public class UserRepository {
     }
 
 
-    public static List<UserIdWithComment> findUserIdAndComments(){
+    public static List<UserIdWithComment> findUserIdAndComments() {
         Session session = null;
         try {
             session = HibernateUtil.openSession();
@@ -90,8 +90,8 @@ public class UserRepository {
     }
 
 
-    public static List<User> findUserWithCommentGreaterThan(Long commentsNumber){
-        Session session =null;
+    public static List<User> findUserWithCommentGreaterThan(Long commentsNumber) {
+        Session session = null;
         try {
             session = HibernateUtil.openSession();
             String hql = "SELECT u FROM User u join u.userCommentSet uc " +
@@ -110,23 +110,64 @@ public class UserRepository {
         }
     }
 
-    public static List<User> findUserByLastName(String lastName){
+    public static List<User> findUserByLastName(String lastName) {
         Session session = null;
         try {
             session = HibernateUtil.openSession();
             String hql = "SELECT u FROM User u WHERE UPPER(u.lastName) like :lastName";
             Query query = session.createQuery(hql);
-            query.setParameter("lastName", "%"+lastName.toUpperCase()+"%");
+            query.setParameter("lastName", "%" + lastName.toUpperCase() + "%");
             List resultList = query.getResultList();
             return resultList;
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();
-        }finally {
+        } finally {
             if (null != session && session.isOpen()) {
                 session.close();
             }
         }
 
+    }
+
+    public static boolean checkIsUserByEmailExist(String email) throws Exception {
+        Session session = null;
+        try {
+            session = HibernateUtil.openSession();
+            String hql = "SELECT COUNT(u) FROM User u WHERE u.email = :email";
+            Query query = session.createQuery(hql);
+            query.setParameter("email", email);
+            query.setParameter("email", email);
+
+            Long userCount = (Long) query.getSingleResult();
+            return userCount > 0 ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    public static Optional<User> findUserByEmailAndPassword(String email, String password) {
+        Session session = null;
+        try {
+            session = HibernateUtil.openSession();
+            String hql = "SELECT u FROM User u WHERE u.email = :email AND u.password = :password";
+            Query query = session.createQuery(hql);
+            query.setParameter("email", email);
+            query.setParameter("password", password);
+            Optional<User> userOptional = query.uniqueResultOptional();
+            return userOptional;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 }
