@@ -1,6 +1,7 @@
 package pl.sda;
 
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -30,6 +31,13 @@ public class User extends BaseEntity {
     @Max(value = 130)
     int age;
 
+    @NaturalId
+    @Column(length = 11)
+    String nip;
+
+    @Lob
+    byte[] image;
+
     @NotNull(message = "Password is empty")
     @Column(nullable = false)
     String password;
@@ -41,7 +49,7 @@ public class User extends BaseEntity {
 
     @Embedded
     //@Valid
-    Address address;
+            Address address;
 
     @OneToOne(cascade = CascadeType.ALL)
     UserRating userRating;

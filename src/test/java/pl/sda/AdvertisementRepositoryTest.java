@@ -3,6 +3,7 @@ package pl.sda;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +54,7 @@ public class AdvertisementRepositoryTest {
                 .title("Fajne mieszkanie")
                 .address(Address.builder().city("Poznań").build())
                 .owner(kowalskiOptional.get())
+                .createDate(LocalDateTime.now().minusMonths(2))
                 .build();
 
         AdvertisementRepository.saveOrUpdate(advertisement);
@@ -62,7 +64,13 @@ public class AdvertisementRepositoryTest {
 
         Assert.assertTrue(advertisementList.size() == 1);
 
+        boolean deleteAllOldAdvertisement = AdvertisementRepository.deleteAllOldAdvertisement();
+        Assert.assertTrue(deleteAllOldAdvertisement);
+
 
     }
+
+
+
 
 }

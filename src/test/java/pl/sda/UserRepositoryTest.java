@@ -4,8 +4,14 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.imageio.ImageIO;
 import javax.validation.*;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -152,4 +158,59 @@ public class UserRepositoryTest {
         Assert.assertFalse(test.isPresent());
     }
 
+    @Test
+    public void findByNip(){
+        String nip = "88050314441";
+
+        User user = User.builder()
+                .age(40)
+                .firstName("Pawel")
+                .lastName("Wysocki")
+                .email("pawel@gmail.com")
+                .sex(Sex.MALE)
+                .password("test")
+                .phoneNumber("557588")
+                .nip(nip)
+                .build();
+
+        Long aLong = UserRepository.saveOrUpdate(user);
+
+        Optional<User> byNip = UserRepository.findByNip(nip);
+
+        Assert.assertTrue(byNip.isPresent());
+        Assert.assertEquals(byNip.get().getId(), aLong);
+    }
+
+    @Test
+    public void loadImageTest() throws IOException {
+        String nip = "88050314441";
+
+        byte[] bytes = extractBytes("C:\\test\\A-fluffy-cat-looking-funny-surprised-or-concerned.jpg");
+        User user = User.builder()
+                .age(40)
+                .firstName("Pawel")
+                .lastName("Wysocki")
+                .email("pawel@gmail.com")
+                .sex(Sex.MALE)
+                .password("test")
+                .phoneNumber("557588")
+                .nip(nip)
+                .image(bytes)
+                .build();
+
+        UserRepository.saveOrUpdate(user);
+    }
+
+
+    public byte[] extractBytes (String ImageName) throws IOException {
+        // open image
+        File imgPath = new File(ImageName);
+        BufferedImage bufferedImage = ImageIO.read(imgPath);
+
+        // get DataBufferBytes from Raster
+        WritableRaster raster = bufferedImage .getRaster();
+        DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
+
+        return ( data.getData() );
+    }
 }

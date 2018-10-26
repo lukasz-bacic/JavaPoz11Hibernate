@@ -170,4 +170,21 @@ public class UserRepository {
             }
         }
     }
+
+    public static Optional<User> findByNip(String nip){
+        Session session = null;
+        try {
+
+            session = HibernateUtil.openSession();
+            User user = session.byNaturalId(User.class).using("nip", nip).load();
+            return Optional.ofNullable(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
 }

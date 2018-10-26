@@ -112,11 +112,11 @@ public class AdvertisementRepository {
         Session session = null;
         try {
             session = HibernateUtil.openSession();
-
             String hql = "SELECT a FROM Advertisement a WHERE " +
                     "a.owner.userRating.rating > :rating " +
                     "AND a.address.city = :city ORDER BY a.price ASC";
             Query query = session.createQuery(hql);
+
             query.setParameter("rating", rating);
             query.setParameter("city", city);
             query.setMaxResults(5);
@@ -156,6 +156,33 @@ public class AdvertisementRepository {
                 session.close();
             }
         }
+    }
+
+    public static boolean deleteAllOldAdvertisement(){
+
+        Session session = null;
+        try {
+            session = HibernateUtil.openSession();
+            session.getTransaction().begin();
+            String sql = "DELETE FROM advertisement " +
+                    "WHERE month(advertisement.createDate) < " +
+                    "month(localtime()) AND advertisement.id > 0 ";
+            NativeQuery nativeQuery = session.createNativeQuery(sql);
+            nativeQuery.executeUpdate();
+            session.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            if(session.getTransaction().isActive()){
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+
     }
 
     public static List<Advertisement> searchAdvertisement(AdvertisementSearchParameter advertisementSearchParameter){
