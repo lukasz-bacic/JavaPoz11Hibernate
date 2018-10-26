@@ -43,7 +43,7 @@ public class User extends BaseEntity {
     //@Valid
     Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     UserRating userRating;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -1,8 +1,6 @@
 package pl.sda;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -10,6 +8,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Advertisement extends BaseEntity {
