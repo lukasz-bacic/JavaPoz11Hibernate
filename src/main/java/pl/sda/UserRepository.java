@@ -4,6 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -171,7 +175,7 @@ public class UserRepository {
         }
     }
 
-    public static Optional<User> findByNip(String nip){
+    public static Optional<User> findByNip(String nip) {
         Session session = null;
         try {
 
@@ -183,6 +187,30 @@ public class UserRepository {
             return Optional.empty();
         } finally {
             if (null != session && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    public static List<User> findByNameCriteriaQuery(String name) {
+        Session session = null;
+        try {
+            session = HibernateUtil.openSession();
+
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<User> query = cb.createQuery(User.class);
+            Root<User> from = query.from(User.class);
+            query.select(from);
+            Predicate whereNameLike = cb.like(from.get("lastName"), "%" + name + "%");
+
+            query.where(whereNameLike);
+            return session.createQuery(query).getResultList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            if (session != null && session.isOpen()) {
                 session.close();
             }
         }

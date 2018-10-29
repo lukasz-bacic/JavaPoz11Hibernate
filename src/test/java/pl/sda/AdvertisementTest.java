@@ -1,5 +1,6 @@
 package pl.sda;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.*;
@@ -30,7 +31,6 @@ public class AdvertisementTest {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String SQL = "SELECT * FROM `portalaukcyjny`.`advertisement` ;";
-
             ResultSet resultSet = stmt.executeQuery(SQL);
 
             while (resultSet.next()) {
@@ -38,21 +38,55 @@ public class AdvertisementTest {
                 System.out.println(advertisement);
             }
 
-
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            if (stmt != null) {
+           if(stmt != null){
+               try {
+                   stmt.close();
+               } catch (SQLException e) {
+                   e.printStackTrace();
+               }
+           }
+           if(conn != null){
+               try {
+                   conn.close();
+               } catch (SQLException e) {
+                   e.printStackTrace();
+               }
+           }
+        }
+    }
+
+    @Test
+    public void update(){
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            //STEP 2: Register JDBC driver
+            Class.forName(JDBC_DRIVER);
+
+            //STEP 3: Open a connection
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+
+            int i = stmt.executeUpdate("DELETE FROM advertisement WHERE id > 0");
+            Assert.assertTrue(i > 0);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if(stmt != null){
                 try {
                     stmt.close();
                 } catch (SQLException e) {
-
+                    e.printStackTrace();
                 }
             }
-            if (conn != null) {
+            if(conn != null){
                 try {
                     conn.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }

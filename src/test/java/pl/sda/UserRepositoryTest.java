@@ -12,6 +12,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -212,5 +213,41 @@ public class UserRepositoryTest {
         DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
 
         return ( data.getData() );
+    }
+
+    @Test
+    public void testSearchByNamePredicate(){
+
+        User kowalski = User.builder()
+                .age(20)
+                .firstName("Jan")
+                .lastName("Kowalski")
+                .email("kowalski_66@gmail.com")
+                .password("4")
+                .sex(Sex.MALE)
+                .userRating(UserRating.builder()
+                        .rating(5)
+                        .build())
+                .build();
+
+        User nowak = User.builder()
+                .age(20)
+                .firstName("Pawel")
+                .lastName("Nowak")
+                .email("nowaczek@onet.com")
+                .password("4")
+                .sex(Sex.MALE)
+                .userRating(UserRating.builder()
+                        .rating(5)
+                        .build())
+                .build();
+
+        Long kowalksiId = UserRepository.saveOrUpdate(kowalski);
+        Long nowakId = UserRepository.saveOrUpdate(nowak);
+
+
+        List<User> owa = UserRepository.findByNameCriteriaQuery("owak");
+        Assert.assertTrue(owa.size() == 1);
+
     }
 }
