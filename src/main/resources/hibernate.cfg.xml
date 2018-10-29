@@ -19,6 +19,7 @@
         <mapping class="pl.sda.UserRating" />
         <mapping class="pl.sda.UserComment" />
         <mapping class="pl.sda.Advertisement" />
+        <mapping class="pl.sda.Message" />
 
     </session-factory>
 </hibernate-configuration>

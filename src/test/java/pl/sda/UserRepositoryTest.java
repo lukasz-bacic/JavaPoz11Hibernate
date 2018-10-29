@@ -166,7 +166,7 @@ public class UserRepositoryTest {
                 .age(40)
                 .firstName("Pawel")
                 .lastName("Wysocki")
-                .email("pawel@gmail.com")
+                .email("pawel44@gmail.com")
                 .sex(Sex.MALE)
                 .password("test")
                 .phoneNumber("557588")

@@ -18,6 +18,9 @@ public class AdvertisementRepository {
             Transaction transaction = session.getTransaction();
             transaction.begin();
             session.saveOrUpdate(advertisement);
+            session.save(advertisement);
+            session.persist(advertisement);
+
             transaction.commit();
             return advertisement.getId();
         } catch (Exception ex) {
@@ -120,6 +123,7 @@ public class AdvertisementRepository {
             query.setParameter("rating", rating);
             query.setParameter("city", city);
             query.setMaxResults(5);
+            query.setFirstResult(5);
             List resultList = query.getResultList();
             return resultList;
         } catch (Exception e) {

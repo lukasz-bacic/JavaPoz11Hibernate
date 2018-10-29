@@ -49,7 +49,7 @@ public class User extends BaseEntity {
 
     @Embedded
     //@Valid
-            Address address;
+    Address address;
 
     @OneToOne(cascade = CascadeType.ALL)
     UserRating userRating;
